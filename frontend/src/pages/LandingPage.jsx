@@ -34,40 +34,6 @@ const LandingPage = () => {
       />
 
       <div className="opt-card w-full max-w-[1120px] mx-auto px-6 sm:px-10 lg:px-16 py-10 sm:py-14 lg:py-16 relative">
-        {/* Curved arrow pointing to ebook (desktop only) */}
-        <svg
-          className="curved-arrow hidden lg:block"
-          style={{ top: "28%", left: "48%", width: 150, height: 90 }}
-          viewBox="0 0 150 90"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden
-        >
-          <path
-            d="M10 10 C 30 80, 90 80, 135 35"
-            fill="none"
-            stroke="#FF2D78"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M135 35 L 122 30 M135 35 L 128 48"
-            fill="none"
-            stroke="#FF2D78"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <text
-            x="0"
-            y="6"
-            fontFamily="Caveat, cursive"
-            fontSize="22"
-            fill="#FF2D78"
-            fontWeight="600"
-          >
-            Yours free!
-          </text>
-        </svg>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* LEFT: Copy + CTA */}
           <div className="text-center lg:text-left">
@@ -79,7 +45,8 @@ const LandingPage = () => {
               data-testid={HOME.headline}
               className="h-display fade-up delay-2 mt-5 text-[34px] sm:text-[44px] lg:text-[48px] xl:text-[54px]"
             >
-              Beginner&apos;s <span className="accent">Roadmap</span> To Sewing Your First <span className="accent">Dress</span> In 30 Days
+              Beginner&apos;s <span className="accent">Roadmap</span> To Sewing
+              Your First <span className="accent">Dress</span> In 30 Days
             </h1>
 
             <p className="h-sub fade-up delay-3 mt-5 text-base sm:text-lg max-w-[520px] mx-auto lg:mx-0">
@@ -87,7 +54,12 @@ const LandingPage = () => {
             </p>
 
             {/* Mobile: ebook between subheadline & CTA */}
-            <div className="block lg:hidden mt-8 fade-up delay-3">
+            <div className="block lg:hidden mt-8 fade-up delay-3 relative">
+              <div className="flex justify-center mb-3">
+                <span className="inline-block bg-[#FF2D78] text-white text-[10px] font-extrabold tracking-[0.18em] px-3 py-1.5 rounded-full shadow-[0_8px_20px_-6px_rgba(255,45,120,0.55)]">
+                  FREE 30-DAY GUIDE
+                </span>
+              </div>
               <EbookMockup variant="mobile" />
             </div>
 
@@ -113,16 +85,23 @@ const LandingPage = () => {
             {/* trust badges */}
             <div className="fade-up delay-5 mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-[12px] text-[#888]">
               <span className="flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5 text-[#FF2D78]" /> Loved by 12,000+ beginners
+                <Heart className="w-3.5 h-3.5 text-[#FF2D78]" /> Loved by 12,000+
+                beginners
               </span>
               <span className="flex items-center gap-1.5">
-                <Scissors className="w-3.5 h-3.5 text-[#FF2D78]" /> Step-by-step lessons
+                <Scissors className="w-3.5 h-3.5 text-[#FF2D78]" /> Step-by-step
+                lessons
               </span>
             </div>
           </div>
 
           {/* RIGHT: Ebook mockup (desktop) */}
-          <div className="hidden lg:flex justify-center items-center fade-up delay-4">
+          <div className="hidden lg:flex justify-center items-center fade-up delay-4 relative">
+            <div className="absolute top-0 right-8 z-10">
+              <span className="inline-block bg-[#FF2D78] text-white text-[10px] font-extrabold tracking-[0.18em] px-3 py-1.5 rounded-full shadow-[0_8px_20px_-6px_rgba(255,45,120,0.55)]">
+                FREE 30-DAY GUIDE
+              </span>
+            </div>
             <EbookMockup />
           </div>
         </div>

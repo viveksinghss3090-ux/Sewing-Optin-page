@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import {
@@ -14,41 +14,85 @@ import { HOME } from "@/constants/testIds";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[+0-9 ()-]{6,30}$/;
+
 const LeadModal = ({ open, onOpenChange }) => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  // Fire Meta Pixel ViewContent when modal opens
+  useEffect(() => {
+    if (open && typeof window !== "undefined" && typeof window.fbq === "function") {
+      try {
+        window.fbq("track", "ViewContent", {
+          content_name: "Beginner's Sewing Roadmap Opt-In",
+          content_category: "Lead Magnet",
+        });
+      } catch (e) {
+        // no-op
+      }
+    }
+  }, [open]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    if (loading || success) return; // prevent duplicate submissions
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
+    setError("");
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+
+    if (!name || !email || !phone) {
       setError("Please fill in all fields to continue.");
+      return;
+    }
+    if (!EMAIL_REGEX.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!PHONE_REGEX.test(phone)) {
+      setError("Please enter a valid phone number.");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await axios.post(`${API}/leads`, {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
-      });
-
+      const res = await axios.post(`${API}/leads`, { name, email, phone });
       const redirect = res?.data?.redirect_url;
-      toast.success("You're in! Redirecting to your free course...");
-      // Redirect immediately, no thank-you page
+
+      // Fire Meta Pixel Lead event
+      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        try {
+          window.fbq("track", "Lead", {
+            content_name: "Beginner's Sewing Roadmap",
+            currency: "USD",
+            value: 0,
+          });
+        } catch (e) {
+          // no-op
+        }
+      }
+
+      setSuccess(true);
+      toast.success(
+        "Success! Your free ebook is on its way. Redirecting to your bonus course..."
+      );
       setTimeout(() => {
         window.location.href =
-          redirect || "https://www.digistore24.com/redir/561361/kazi200/";
-      }, 350);
+          redirect ||
+          "https://www.your-creatory.com/serger-overlocker-course-and-sewing-lessons/?aff=kazi200";
+      }, 900);
     } catch (err) {
-      console.error(err);
+      console.error("Lead submit failed", err);
       const msg =
         err?.response?.data?.detail ||
         "We couldn't send your details. Please try again.";
@@ -57,6 +101,15 @@ const LeadModal = ({ open, onOpenChange }) => {
       setLoading(false);
     }
   };
+
+  // Reset state when modal closes
+  useEffect(() => {
+    if (!open) {
+      setError("");
+      setSuccess(false);
+      setLoading(false);
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -90,6 +143,7 @@ const LeadModal = ({ open, onOpenChange }) => {
             value={formData.name}
             onChange={handleChange}
             autoComplete="name"
+            disabled={loading || success}
             required
           />
           <input
@@ -101,6 +155,7 @@ const LeadModal = ({ open, onOpenChange }) => {
             value={formData.email}
             onChange={handleChange}
             autoComplete="email"
+            disabled={loading || success}
             required
           />
           <input
@@ -112,6 +167,7 @@ const LeadModal = ({ open, onOpenChange }) => {
             value={formData.phone}
             onChange={handleChange}
             autoComplete="tel"
+            disabled={loading || success}
             required
           />
 
@@ -119,6 +175,7 @@ const LeadModal = ({ open, onOpenChange }) => {
             <div
               data-testid={HOME.formError}
               className="text-[12.5px] text-red-500 -mt-1"
+              role="alert"
             >
               {error}
             </div>
@@ -127,13 +184,13 @@ const LeadModal = ({ open, onOpenChange }) => {
           <button
             data-testid={HOME.modalSubmit}
             type="submit"
-            disabled={loading}
-            className="cta-btn mt-2 flex items-center justify-center"
+            disabled={loading || success}
+            className="cta-btn mt-2 flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
           >
-            {loading ? (
+            {loading || success ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sending...
+                {success ? "Redirecting..." : "Sending..."}
               </>
             ) : (
               <>
