@@ -4,9 +4,9 @@ import { HOME } from "@/constants/testIds";
 /**
  * Pure CSS/SVG 3D-style ebook mockup with sewing-themed illustrations.
  */
-export const EbookMockup = () => {
+export const EbookMockup = ({ variant = "desktop" }) => {
   return (
-    <div className="ebook-stage" data-testid={HOME.ebookMockup}>
+    <div className="ebook-stage" data-testid={variant === "mobile" ? "ebook-mockup-mobile" : "ebook-mockup"}>
       <div className="ebook">
         <div className="ebook-spine" aria-hidden />
         <div className="ebook-pages" aria-hidden />

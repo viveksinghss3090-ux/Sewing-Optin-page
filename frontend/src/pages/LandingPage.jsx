@@ -88,7 +88,7 @@ const LandingPage = () => {
 
             {/* Mobile: ebook between subheadline & CTA */}
             <div className="block lg:hidden mt-8 fade-up delay-3">
-              <EbookMockup />
+              <EbookMockup variant="mobile" />
             </div>
 
             <div className="fade-up delay-4 mt-8 max-w-[460px] mx-auto lg:mx-0">
