@@ -1,0 +1,16 @@
+export const HOME = {
+  emergentLink: "home-emergent-link",
+  ctaButton: "cta-get-ebook-button",
+  ctaButtonHero: "hero-cta-button",
+  ctaButtonSticky: "sticky-cta-button",
+  modal: "lead-modal",
+  modalNameInput: "lead-name-input",
+  modalEmailInput: "lead-email-input",
+  modalPhoneInput: "lead-phone-input",
+  modalSubmit: "lead-submit-button",
+  modalClose: "lead-modal-close",
+  privacyText: "privacy-text",
+  ebookMockup: "ebook-mockup",
+  headline: "hero-headline",
+  formError: "lead-form-error",
+};
