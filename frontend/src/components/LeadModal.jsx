@@ -11,7 +11,7 @@ import {
 import { Lock, Loader2 } from "lucide-react";
 import { HOME } from "@/constants/testIds";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = 'http://backend.railway.internal';
 const API = `${BACKEND_URL}/api`;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
